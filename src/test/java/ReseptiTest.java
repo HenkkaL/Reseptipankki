@@ -33,12 +33,13 @@ public class ReseptiTest {
 
     @Test
     public void konstruktori() {
-        assertEquals("Resepti{nimi=, Vaiheet=[], rAineet=[]}", resepti2.toString());
+
+        assertEquals("", resepti2.getNimi());
     }
 
     @Test
     public void kuormitettuKonstruktori() {
-        assertEquals("Resepti{nimi=lohilaatikko, Vaiheet=[], rAineet=[]}", resepti.toString());
+        assertEquals("lohilaatikko", resepti.getNimi());
     }
 
     @Test

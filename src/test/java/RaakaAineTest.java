@@ -21,7 +21,6 @@ public class RaakaAineTest {
 
     RaakaAine rAine;
     RaakaAine toinenAine;
-    
 
     @Before
     public void setUp() {
@@ -60,7 +59,7 @@ public class RaakaAineTest {
         rAine.setNimi("liianpitkänimiliianpitkaniminliianpitkänimiliianpitkanimin");
         assertEquals(rAine.getNimi(), "tomaatti");
     }
-    
+
     @Test
     public void setteriSopivaMitta() {
         assertEquals(rAine.setMitta("sopiva mitta"), true);
