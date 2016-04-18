@@ -13,8 +13,7 @@ public class Resepti implements Serializable, Comparable<Resepti> {
 
     private String nimi; //reseptin nimi
     private String kuvailu; //reseptin pienimuotoinen kuvailu
-    private String vaihe; //yksittäinen valmistusvaihe
-    public static final int NIMI_PITUUS = 50; //reseptin nimen maksimipituus
+    public static final int NIMI_PITUUS = 30; //reseptin nimen maksimipituus
     public static final int KUVAILU_PITUUS = 300; //kuvailuun käytettävän merkkijonon maksimipituus
     public static final int VAIHE_PITUUS = 300; //valmistuvaiheen kuvailuun käytettävän merkkijonon maksimipituus
     private ArrayList<RaakaAine> rAineet; //luettelo raaka-aineista
@@ -40,14 +39,14 @@ public class Resepti implements Serializable, Comparable<Resepti> {
      * NIMI_PITUUS
      */
     public Resepti(String nimi) {
-        if (this.setNimi(nimi)) {
-            this.nimi = nimi;
-        } else {
-            this.nimi = "";
-        }
-        this.kuvailu = "";
-        vaiheet = new ArrayList<>();
-        rAineet = new ArrayList<>();
+        try{
+            this.setNimi(nimi);
+            this.kuvailu = "";
+            vaiheet = new ArrayList<>();
+            rAineet = new ArrayList<>();
+        } catch (Exception e) {
+            System.out.println("Ongelmia reseptin luomisessa" + e);
+        }      
     }
 
     /**
@@ -138,10 +137,17 @@ public class Resepti implements Serializable, Comparable<Resepti> {
      * @return Palauttaa tiedon (boolean) operaation onnistumisesta.
      */
     public boolean setVaihe(int i, String vaihe) {
-        if (vaihe.length() > VAIHE_PITUUS) {
+        try{
+            if (vaihe.length() > VAIHE_PITUUS) 
+            return false;
+            this.vaiheet.set(i, vaihe);            
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Indeksiongelmia" + e);
+            return false;
+        } catch (Exception e) {
+            System.out.println("Ongelmia vaiheen muokkaamisessa" + e);
             return false;
         }
-        this.vaiheet.set(i, vaihe);
         return true;
     }
 
@@ -154,6 +160,8 @@ public class Resepti implements Serializable, Comparable<Resepti> {
      * @return Palauttaa tiedon (boolean) operaation onnistumisesta.
      */
     public boolean lisaaVaihe(String vaihe) {
+        if (vaihe.length() > VAIHE_PITUUS) 
+            return false;
         return this.vaiheet.add(vaihe);
     }
 
@@ -167,15 +175,6 @@ public class Resepti implements Serializable, Comparable<Resepti> {
         return rAineet;
     }
 
-    /**
-     * Metodin avulla voidaan asetaa reseptiin uusi raaka-ainelista.
-     *
-     * @param rAineet RaakaAine -olioita sisältävä ArrayList -tyyppinen
-     * muuttuja.
-     */
-    public void setRaakaAineet(ArrayList<RaakaAine> rAineet) {
-        this.rAineet = rAineet;
-    }
 
     /**
      * Metodin avulla voidaan tietty reseptiin kuuluva raaka-aine.
@@ -203,17 +202,19 @@ public class Resepti implements Serializable, Comparable<Resepti> {
      * @param rAine RaakaAine -tyyppinen olio, jolla olemassaoleva raaka-aine
      * korvataan.
      */
-    public void setRaakaAine(int i, RaakaAine rAine) {
+    public boolean setRaakaAine(int i, RaakaAine rAine) {
+        try{
         this.rAineet.set(i, rAine);
+                } catch (IndexOutOfBoundsException e) {
+            System.out.println("Indeksiongelmia" + e);
+            return false;
+        } catch (Exception e) {
+            System.out.println("Ongelmia raaka-aineen muokkaamisessa" + e);
+            return false;
+        }
+        return true;
     }
 
-    /**
-     * Metodi luo uuden raaka-aine -olion ja lisää sen raaka-ainelistaan.
-     */
-    public void lisaaUusiRaakaAine() {
-        this.uusiRaakaAine = new RaakaAine();
-        this.rAineet.add(uusiRaakaAine);
-    }
 
     /**
      * Metodi lisää raaka-aineen raaka-ainelistaan.
@@ -233,6 +234,17 @@ public class Resepti implements Serializable, Comparable<Resepti> {
     public int compareTo(Resepti toinenResepti) {
         return this.nimi.compareTo(toinenResepti.getNimi());
     }
+    
+    /**
+     * 
+     * @param toinenResepti
+     * @return 
+     */
+    public boolean equals(Resepti toinenResepti){
+        return (this.nimi.equals(toinenResepti.getNimi()) && this.kuvailu.equals(toinenResepti.getKuvailu()) 
+                && this.rAineet.equals(toinenResepti.getRaakaAineet()) && this.vaiheet.equals(toinenResepti.getVaiheet()));
+    }
+            
 
     /**
      * Metodi palauttaa reseptin tiedot String -tyyppisenä merkkijonona.
@@ -241,16 +253,8 @@ public class Resepti implements Serializable, Comparable<Resepti> {
      */
     @Override
     public String toString() {
-        String apuVaiheet = "";
-        String apuRaakaAineet = "";
-        for (String apuri : this.vaiheet) {
-            apuVaiheet = apuVaiheet + "; " + apuri;
-        }
-        for (RaakaAine apuri : this.rAineet) {
-            apuRaakaAineet = apuRaakaAineet + "; " + apuri.toString();
-        }
-
-        return "Resepti{" + "Nimi=" + nimi + ". Kuvailu=" + kuvailu + " Vaiheet=" + vaiheet + " rAineet=" + rAineet + '}';
+        
+        return nimi + "; Kuvailu: " + kuvailu + "; Vaiheet: " + this.vaiheet + "; Raaka-Aineet: " + this.rAineet;
     }
 
 }

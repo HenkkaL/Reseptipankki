@@ -13,11 +13,11 @@ import java.util.Scanner;
  */
 public class Reseptikortisto {
 
-    private static boolean onkoTallennettu;
+    private boolean onkoTallennettu;
 
     private ArrayList<Resepti> reseptikortisto;
     private ArrayList<Resepti> hakutulos;
-    private Resepti uusiResepti;
+    private Resepti uusiResepti, resepti;
 
     public Reseptikortisto() {
         reseptikortisto = new ArrayList<>();
@@ -38,7 +38,7 @@ public class Reseptikortisto {
             onkoTallennettu = true;
         } catch (Exception e) {
             onkoTallennettu = false;
-            return false;
+            return false;            
         }
         return true;
     }
@@ -79,6 +79,28 @@ public class Reseptikortisto {
         }
         return true;
     }
+    
+    /**
+     * Ei testattu, ei kuvailtu!
+     * @param indeksi
+     * @return 
+     */
+    public Resepti tuoResepti(int indeksi){        
+        try{
+            this.resepti = this.reseptikortisto.get(indeksi);
+        } catch (Exception e) {
+            System.out.println("Ongelmia !!! " + e);
+        }
+        return this.resepti;
+    }
+    
+    /**
+     * 
+     * @return 
+     */
+    public ArrayList<Resepti> tuoKortisto(){
+        return this.reseptikortisto;
+    }
 
     /**
      * Metodi hakee reseptejä vertaamalla hakusanaa näiden nimiin.
@@ -87,9 +109,10 @@ public class Reseptikortisto {
      * @return Palauttaa listan hakusanan sisältäneistä resepteistä.
      */
     public ArrayList<Resepti> nimiHaku(String hakusana) {
+        hakusana.trim();
         hakutulos = new ArrayList<>();
         for (Resepti apuri : this.reseptikortisto) {
-            if (apuri.getNimi().toLowerCase().matches(".*" + hakusana.toLowerCase() + ".*")) {
+            if (apuri.getNimi().toLowerCase().contains(hakusana.toLowerCase())) {
                 this.hakutulos.add(apuri);
             }
         }
@@ -103,13 +126,14 @@ public class Reseptikortisto {
      * @return Palauttaa listan hakusanan sisältäneistä resepteistä.
      */
     public ArrayList<Resepti> taysiHaku(String hakusana) {
-
+        hakusana.trim();
         hakutulos = new ArrayList<>();
         for (Resepti apuri : this.reseptikortisto) {
-            if (apuri.toString().toLowerCase().matches(".*" + hakusana.toLowerCase() + ".*")) {
+            if (apuri.toString().toLowerCase().contains(hakusana.toLowerCase())) {
                 this.hakutulos.add(apuri);
             }
         }
+        Collections.sort(hakutulos);
         return hakutulos;
     }
 
@@ -131,7 +155,7 @@ public class Reseptikortisto {
         this.jarjesta();
         onkoTallennettu = false;
         return true;
-    }
+    } //tämä ehkä pois, tarvitaanko??????*/
 
     /**
      * Metodi lisää reseptikortistoon uuden tyhjän reseptin.
@@ -139,7 +163,7 @@ public class Reseptikortisto {
      * @param reseptinNimi String -tyyppinn muuttuja.
      * @return Palauttaa tiedon operaation onnistumisesta.
      */
-    public boolean lisaaTyhjaResepti(String reseptinNimi) {
+    public boolean lisaaResepti(String reseptinNimi) {
 
         for (Resepti apuri : this.reseptikortisto) {
             if (apuri.getNimi().equalsIgnoreCase(reseptinNimi)) {
@@ -147,11 +171,11 @@ public class Reseptikortisto {
             }
         }
         this.uusiResepti = new Resepti(reseptinNimi);
-        this.reseptikortisto.add(uusiResepti);
-        this.jarjesta();
-        onkoTallennettu = false;
+        this.reseptikortisto.add(uusiResepti);        
+        this.tallentamatonMuutos();
         return true;
     }
+    
 
     /**
      * Metodi järjestää reseptikortiston reseptit nimen mukaiseen järjestykseen.
@@ -182,15 +206,23 @@ public class Reseptikortisto {
      *
      * @return Palauttaa tiedon (boolean) reseptikortiston tallennustilasta.
      */
-    public static boolean tallennustila() {
-        return onkoTallennettu;
+    public boolean tallennustila() {
+        return this.onkoTallennettu;
     }
 
     /**
      * Luokkametodi muuttaa tallennustilan arvoa.
      */
-    public static void tallentamatonMuutos() {
-        onkoTallennettu = false;
+    public void tallentamatonMuutos() {
+        this.onkoTallennettu = false;
+    }
+    
+    /**
+     * EI testattu ei kuvailtu
+     * @return 
+     */
+    public int kortistonKoko(){
+        return this.reseptikortisto.size();
     }
 
 }

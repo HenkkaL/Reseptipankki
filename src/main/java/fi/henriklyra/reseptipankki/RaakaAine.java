@@ -13,9 +13,9 @@ public class RaakaAine implements Serializable {
     private String nimi; //raaka-aineen nimi
     private String mitta; //käytettävä mittayksikkö
     private String maara; //raaka-aineen määrä. Merkkijono mahdollistaa sanalliset kuvailut esim. "hyppysellinen"
-    public final int R_AINE_NIMI_PITUUS = 50; //raaka-aineen nimen merkkijonon suurin sallittu pituus
-    public final int MITTA_PITUUS = 20; // mittayksikön merkkijonon suurin sallittu pituus
-    public final int MAARA_PITUUS = 20; //määrää kuvaavan merkkijonon suurin sallittu pituus
+    public static final int R_AINE_NIMI_PITUUS = 30; //raaka-aineen nimen merkkijonon suurin sallittu pituus
+    public static final int MITTA_PITUUS = 20; // mittayksikön merkkijonon suurin sallittu pituus
+    public static final int MAARA_PITUUS = 20; //määrää kuvaavan merkkijonon suurin sallittu pituus
 
     /**
      * Parametritön konstruktori luo raaka-aineen, jonka kentät ovat tyhjiä.
@@ -37,20 +37,12 @@ public class RaakaAine implements Serializable {
      * raaka-aineen määrän.
      */
     public RaakaAine(String nimi, String mitta, String maara) {
-        if (this.setNimi(nimi)) {
-            this.nimi = nimi;
-        } else {
-            this.nimi = "";
-        }
-        if (this.setMitta(mitta)) {
-            this.mitta = mitta;
-        } else {
-            this.mitta = "";
-        }
-        if (this.setMaara(maara)) {
-            this.setMaara(maara);
-        } else {
-            this.maara = "";
+        try {
+            this.setNimi(nimi);
+            this.setMitta(mitta);
+            this.setMaara(maara);            
+        } catch (Exception e) {
+            System.out.println("Ongelmia Raaka-aineen luomisessa" + e);
         }
     }
 
@@ -122,6 +114,15 @@ public class RaakaAine implements Serializable {
         }
         this.maara = maara;
         return true;
+    }
+    /**
+     * 
+     * @param toinenRA
+     * @return 
+     */
+    public boolean equals(RaakaAine toinenRA) {
+        return (this.nimi.equals(toinenRA.getNimi()) && this.mitta.equals(toinenRA.getMitta()) 
+                && this.maara.equals(toinenRA.getMaara()));
     }
 
     /**

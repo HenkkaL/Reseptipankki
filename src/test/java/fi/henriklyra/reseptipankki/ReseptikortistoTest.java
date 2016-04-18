@@ -3,8 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package fi.henriklyra.reseptipankki;
 
-import fi.henriklyra.reseptipankki.*;
 import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -51,25 +51,47 @@ public class ReseptikortistoTest {
     }
 
     @Test
-    public void lisataanreseptiOlio() {
-        Resepti testi = new Resepti("Testi");
-        assertEquals(rk.lisaaResepti(testi), true);
+    public void lisataanReseptiOlio() {
+        Resepti r = new Resepti();
+        assertEquals(true, rk.lisaaResepti(r));
     }
 
     @Test
-    public void lisataanreseptiNimi() {
-        assertEquals(rk.lisaaTyhjaResepti("testi"), true);
+    public void lisataanOlemassaolevaReseptiOlio() {
+        assertEquals(false, rk.lisaaResepti(resepti1));
+    }
+
+    @Test
+    public void lisataanReseptiNimi() {
+        assertEquals(true, rk.lisaaResepti("testi"));
+    }
+
+    @Test
+    public void lisataanOlemassaolevaResepti() {
+        assertEquals(false, rk.lisaaResepti("Jauhelihalaatikko"));
     }
 
     @Test
     public void tallennetaan() {
-        assertEquals(rk.tallenna(), true);
+        assertEquals(true, rk.tallenna());
     }
 
     @Test
     public void tallennetaanJaSuljetaanSekaAvataan() {
         rk.tallennaJaSulje();
-        assertEquals(rk.tallesta(), true);
+        assertEquals(true, rk.tallesta());
+    }
+
+    @Test
+    public void tuoReseptiMetodi() {
+        assertEquals(resepti1, rk.tuoResepti(0));
+    }
+
+    @Test
+    public void tuoReseptiKortistoMetodi() {
+        ArrayList<Resepti> testi;
+        testi = rk.tuoKortisto();
+        assertEquals(3, testi.size());
     }
 
     @Test
@@ -101,9 +123,26 @@ public class ReseptikortistoTest {
     }
 
     @Test
+    public void poistetaanResepti() {
+        rk.poistaResepti(resepti1);
+        assertEquals(2, rk.kortistonKoko());
+    }
+
+    @Test
+    public void poistetaanReseptiPaluuarvoTrue() {
+        assertEquals(true, rk.poistaResepti(resepti1));
+    }
+
+    @Test
+    public void poistetaanReseptiPaluuarvoFalse() {
+        Resepti testi = new Resepti();
+        assertEquals(false, rk.poistaResepti(testi));
+    }
+
+    @Test
     public void poistetaanReseptiTarkastellaanTallennustilaa() {
         rk.poistaResepti(resepti1);
-        assertEquals(false, Reseptikortisto.tallennustila());
+        assertEquals(false, rk.tallennustila());
     }
 
 }
