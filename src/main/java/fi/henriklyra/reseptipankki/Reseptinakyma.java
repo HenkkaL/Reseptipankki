@@ -7,6 +7,8 @@ package fi.henriklyra.reseptipankki;
 
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  *
@@ -14,13 +16,15 @@ import javax.swing.*;
  */
 public class Reseptinakyma extends javax.swing.JFrame {
 
-    Resepti resepti;
-    RaakaAine raakaAine;
-    JPanel otsikkoYla, otsikkoAla, raakaAineetYla, raakaAineetAla, yksiRAine, valmistusvaiheetYla, valmistusvaiheetAla, yksivaihe;
-    JLabel nimi, rAineet, vVaiheet, rAine, mitta, maara;
-    JTextArea kuvailu, vaihe;
-    JButton muokkaaNappi;
-    Font leipateksti, otsikkoTeksti;
+    private Resepti resepti;
+    private RaakaAine raakaAine;
+    private JPanel otsikkoYla, otsikkoAla, raakaAineetYla, raakaAineetAla, yksiRAine, valmistusvaiheetYla, valmistusvaiheetAla, yksivaihe;
+    private JLabel nimi, rAineet, vVaiheet, rAine, mitta, maara;    
+    private JTextArea kuvailu, vaihe;
+    private JTextField nimiMuokkaus, rAineNimiMuokkaus, rAineMittaMuokkaus, rAineMaaraMuokkaus;
+    private JButton muokkaaNappi, nimiNappi, kuvailuNappi, rAineNappi, vVaiheNappi, lisaaRaakaAine, lisaaValmistusvaihe, tallenna, poista;
+    private Font leipateksti, otsikkoTeksti;
+    private PaivitaNimi paivitaNimi;
 
     /**
      * Creates new form Reseptinakyma
@@ -30,96 +34,9 @@ public class Reseptinakyma extends javax.swing.JFrame {
         raakaAine = new RaakaAine();
         this.leipateksti = new Font("Serif", Font.BOLD, 20);
         this.otsikkoTeksti = new Font("Serif", Font.BOLD, 30);
-        initComponents();
+        initComponents();     
         this.setVisible(true);
-
-        //Luodaan otsikkonäkymä
-        this.otsikko.setLayout(new BorderLayout());
-        this.otsikkoYla = new JPanel();
-        this.otsikkoYla.setLayout(new FlowLayout());
-        this.nimi = new JLabel(this.resepti.getNimi());
-        this.nimi.setFont(this.otsikkoTeksti);
-        this.otsikkoYla.add(this.nimi);
-        this.muokkaaNappi = new JButton("Muokkaa reseptiä");
-        this.otsikkoYla.add(this.muokkaaNappi);
-        this.otsikko.add(this.otsikkoYla, BorderLayout.NORTH);
-        this.otsikko.repaint();
-        this.otsikkoAla = new JPanel();
-        this.otsikkoAla.setLayout(new FlowLayout());
-        this.kuvailu = new JTextArea();
-        this.kuvailu.setFont(this.leipateksti);
-        this.kuvailu.setSize(700, 50);
-        this.kuvailu.setLineWrap(true);
-        this.kuvailu.setWrapStyleWord(true);
-        kuvailu.setEditable(false);
-        kuvailu.setText(resepti.getKuvailu());
-        this.otsikkoAla.add(this.kuvailu);
-        this.otsikko.add(this.otsikkoAla, BorderLayout.SOUTH);
-
-        //Luodaan raaka-ainenäkymä
-        this.raakaAinePaneeli.setLayout(new BorderLayout());
-
-        //Luodaan raaka-aineiden otsikko 
-        this.raakaAineetYla = new JPanel();
-        this.raakaAineetYla.setLayout(new FlowLayout());
-        this.rAineet = new JLabel("Raaka-aineet:");
-        this.rAineet.setFont(this.otsikkoTeksti);
-        this.raakaAineetYla.add(this.rAineet);
-        this.raakaAinePaneeli.add(this.raakaAineetYla, BorderLayout.NORTH);
-
-        //Luodaan lista raaka-aineisa
-        this.raakaAineetAla = new JPanel();
-        this.raakaAineetAla.setLayout(new GridLayout(this.resepti.getRaakaAineet().size(), 1));
-
-        for (RaakaAine aine : this.resepti.getRaakaAineet()) {
-            //Luodaan kukin raaka-aine erikseen
-            this.yksiRAine = new JPanel();
-            this.yksiRAine.setLayout(new FlowLayout());
-            this.raakaAine = aine;
-            this.maara = new JLabel(raakaAine.getMaara());
-            this.maara.setFont(leipateksti);
-            this.mitta = new JLabel(raakaAine.getMitta());
-            this.mitta.setFont(leipateksti);
-            this.rAine = new JLabel(raakaAine.getNimi());
-            this.rAine.setFont(leipateksti);
-            this.yksiRAine.add(this.maara);
-            this.yksiRAine.add(this.mitta);
-            this.yksiRAine.add(this.rAine);
-            this.raakaAineetAla.add(this.yksiRAine);
-        }
-        this.raakaAinePaneeli.add(this.raakaAineetAla, BorderLayout.SOUTH);
-
-        //Luodaan valmistusvaihenäkymä
-        this.valmVaihePaneeli.setLayout(new BorderLayout());
-
-        //Luodaan valmistusvaiheille otsikko
-        this.valmistusvaiheetYla = new JPanel();
-        this.valmistusvaiheetYla.setLayout(new FlowLayout());
-        this.vVaiheet = new JLabel("Valmistusvaiheet:");
-        this.vVaiheet.setFont(this.otsikkoTeksti);
-        this.valmistusvaiheetYla.add(this.vVaiheet);
-        this.valmVaihePaneeli.add(this.valmistusvaiheetYla, BorderLayout.NORTH);
-
-        //Luodaan lista valmistusvaiheista
-        this.valmistusvaiheetAla = new JPanel();
-        this.valmistusvaiheetAla.setLayout(new GridLayout(this.resepti.getVaiheet().size(), 1));
-
-        for (String uusiVaihe : this.resepti.getVaiheet()) {
-            //Luodaan kukin valmistusvaihe erikseen ja asetetaan omaan paneeliinsa
-            this.yksivaihe = new JPanel();
-            this.yksivaihe.setLayout(new FlowLayout());
-            this.vaihe = new JTextArea();
-            this.vaihe.setFont(this.leipateksti);
-            this.vaihe.setSize(700, 50);
-            this.vaihe.setLineWrap(true);
-            this.vaihe.setWrapStyleWord(true);
-            this.vaihe.setEditable(false);
-            this.vaihe.setText(uusiVaihe);
-            this.yksivaihe.add(this.vaihe);
-            this.valmistusvaiheetAla.add(this.yksivaihe);
-        }
-        this.valmVaihePaneeli.add(this.valmistusvaiheetAla, BorderLayout.SOUTH);
-
+        this.reseptiselailu();
     }
 
     /**
@@ -250,4 +167,225 @@ public class Reseptinakyma extends javax.swing.JFrame {
     private javax.swing.JPanel valmVaihePaneeli;
     // End of variables declaration//GEN-END:variables
 
+    
+    public void reseptiselailu(){
+        this.otsikkoSelailu();
+        this.raakaAineSelailu();
+        this.valmistusvaiheSelailu();
+        SwingUtilities.updateComponentTreeUI(this);
+        this.jScrollPane1.getVerticalScrollBar().setValue(0);
+    }
+    
+    public void muokkaaReseptia(){
+        this.otsikkoMuokkaus();
+        this.raakaAineMuokkaus();
+        this.valmistusvaiheMuokkaus();
+        SwingUtilities.updateComponentTreeUI(this);
+        this.jScrollPane1.getVerticalScrollBar().setValue(0);
+    }
+    
+    public void otsikkoSelailu(){
+        this.otsikko.setLayout(new BorderLayout());
+        this.otsikkoYla = new JPanel();
+        this.otsikkoYla.setLayout(new FlowLayout());        
+        this.nimi = new JLabel(this.resepti.getNimi());
+        this.nimi.setFont(this.otsikkoTeksti);       
+        this.otsikkoYla.add(this.nimi);
+        this.muokkaaNappi = new JButton("muokkaa reseptiä");
+        this.otsikkoYla.add(this.muokkaaNappi);
+        this.muokkaaNappi.addActionListener(e -> this.muokkaaReseptia());
+        this.otsikko.add(this.otsikkoYla, BorderLayout.NORTH);
+        //this.otsikko.repaint();
+        this.otsikkoAla = new JPanel();
+        this.otsikkoAla.setLayout(new FlowLayout());
+        this.kuvailu = new JTextArea();
+        this.kuvailu.setFont(this.leipateksti);
+        this.kuvailu.setSize(700, 50);
+        this.kuvailu.setLineWrap(true);
+        this.kuvailu.setWrapStyleWord(true);
+        kuvailu.setEditable(false);
+        kuvailu.setText(resepti.getKuvailu());
+        this.otsikkoAla.add(this.kuvailu);
+        this.otsikko.add(this.otsikkoAla, BorderLayout.SOUTH);         
+    }
+    
+    public void raakaAineSelailu(){
+        //Luodaan raaka-ainenäkymä
+        this.raakaAinePaneeli.setLayout(new BorderLayout());
+
+        //Luodaan raaka-aineiden otsikko 
+        this.raakaAineetYla = new JPanel();
+        this.raakaAineetYla.setLayout(new FlowLayout());
+        this.rAineet = new JLabel("Raaka-aineet:");
+        this.rAineet.setFont(this.otsikkoTeksti);
+        this.raakaAineetYla.add(this.rAineet);
+        this.raakaAinePaneeli.add(this.raakaAineetYla, BorderLayout.NORTH);
+
+        //Luodaan lista raaka-aineisa
+        this.raakaAineetAla = new JPanel();
+        this.raakaAineetAla.setLayout(new GridLayout(this.resepti.getRaakaAineet().size(), 1));
+
+        for (RaakaAine aine : this.resepti.getRaakaAineet()) {
+            //Luodaan kukin raaka-aine erikseen
+            this.yksiRAine = new JPanel();
+            this.yksiRAine.setLayout(new FlowLayout());
+            this.raakaAine = aine;
+            this.maara = new JLabel(raakaAine.getMaara());
+            this.maara.setFont(leipateksti);
+            this.mitta = new JLabel(raakaAine.getMitta());
+            this.mitta.setFont(leipateksti);
+            this.rAine = new JLabel(raakaAine.getNimi());
+            this.rAine.setFont(leipateksti);
+            this.yksiRAine.add(this.maara);
+            this.yksiRAine.add(this.mitta);
+            this.yksiRAine.add(this.rAine);            
+            this.raakaAineetAla.add(this.yksiRAine);
+        }
+        this.raakaAinePaneeli.add(this.raakaAineetAla, BorderLayout.SOUTH);        
+    }
+    
+    public void valmistusvaiheSelailu(){
+        //Luodaan valmistusvaihenäkymä
+        this.valmVaihePaneeli.setLayout(new BorderLayout());
+
+        //Luodaan valmistusvaiheille otsikko
+    this.valmistusvaiheetYla = new JPanel();
+        this.valmistusvaiheetYla.setLayout(new FlowLayout());
+        this.vVaiheet = new JLabel("Valmistusvaiheet:");
+        this.vVaiheet.setFont(this.otsikkoTeksti);
+        this.valmistusvaiheetYla.add(this.vVaiheet);
+        this.valmVaihePaneeli.add(this.valmistusvaiheetYla, BorderLayout.NORTH);
+
+        //Luodaan lista valmistusvaiheista
+        this.valmistusvaiheetAla = new JPanel();
+        this.valmistusvaiheetAla.setLayout(new GridLayout(this.resepti.getVaiheet().size(), 1));
+
+        for (String uusiVaihe : this.resepti.getVaiheet()) {
+            //Luodaan kukin valmistusvaihe erikseen ja asetetaan omaan paneeliinsa
+            this.yksivaihe = new JPanel();
+            this.yksivaihe.setLayout(new FlowLayout());
+            this.vaihe = new JTextArea();
+            this.vaihe.setFont(this.leipateksti);
+            this.vaihe.setSize(700, 50);
+            this.vaihe.setLineWrap(true);
+            this.vaihe.setWrapStyleWord(true);
+            this.vaihe.setEditable(false);
+            this.vaihe.setText(uusiVaihe);
+            this.yksivaihe.add(this.vaihe);
+            this.valmistusvaiheetAla.add(this.yksivaihe);
+        }
+        this.valmVaihePaneeli.add(this.valmistusvaiheetAla, BorderLayout.SOUTH);
+    }
+    
+        public void otsikkoMuokkaus(){          
+        this.otsikko.removeAll();
+        this.otsikko.setLayout(new BorderLayout());
+        this.otsikkoYla = new JPanel();
+        this.otsikkoYla.setLayout(new FlowLayout());
+        this.nimiMuokkaus = new JTextField(this.resepti.getNimi(), Resepti.NIMI_PITUUS);
+        this.otsikkoYla.add(this.nimiMuokkaus);
+        this.nimiMuokkaus.getDocument().addDocumentListener(new PaivitaNimi(this.nimiMuokkaus, this.resepti));
+        this.poista = new JButton("Poista resepti"); 
+        this.otsikkoYla.add(this.poista);
+        //this.poista.addActionListener(e -> this.poistaResepti());
+        this.tallenna = new JButton("Tallenna resepti"); 
+        this.otsikkoYla.add(this.tallenna);
+        //this.tallenna.addActionListener(e -> this.tallennaResepti());
+        this.otsikko.add(this.otsikkoYla, BorderLayout.NORTH);
+        this.otsikko.repaint();
+        this.otsikkoAla = new JPanel();
+        this.otsikkoAla.setLayout(new FlowLayout());
+        this.kuvailu = new JTextArea();
+        this.kuvailu.setFont(this.leipateksti);
+        this.kuvailu.setSize(700, 50);
+        this.kuvailu.setLineWrap(true);
+        this.kuvailu.setWrapStyleWord(true);
+        this.kuvailu.setEditable(true);
+        this.kuvailu.setText(resepti.getKuvailu());
+        this.otsikkoAla.add(this.kuvailu);        
+        this.kuvailu.getDocument().addDocumentListener(new PaivitaKuvailu(this.kuvailu, this.resepti));
+        this.otsikko.add(this.otsikkoAla, BorderLayout.SOUTH);         
+    }
+        
+        public void raakaAineMuokkaus(){
+        //Luodaan raaka-aineiden muokkausnäkymä
+            this.raakaAinePaneeli.removeAll();
+        this.raakaAinePaneeli.setLayout(new BorderLayout());
+
+        //Luodaan raaka-aineiden otsikko 
+        this.raakaAineetYla = new JPanel();
+        this.raakaAineetYla.setLayout(new FlowLayout());
+        this.rAineet = new JLabel("Raaka-aineet:");
+        this.rAineet.setFont(this.otsikkoTeksti);
+        this.raakaAineetYla.add(this.rAineet);
+        this.lisaaRaakaAine = new JButton("Lisää raaka-aine");
+        this.raakaAineetYla.add(this.lisaaRaakaAine);
+        //this.lisaaRaakaAine.addActionListener(e -> this.raakaAineLisays());
+        this.raakaAinePaneeli.add(this.raakaAineetYla, BorderLayout.NORTH);
+
+        //Luodaan lista raaka-aineista
+        this.raakaAineetAla = new JPanel();
+        this.raakaAineetAla.setLayout(new GridLayout(this.resepti.getRaakaAineet().size(), 1));
+
+        for (RaakaAine aine : this.resepti.getRaakaAineet()) {
+            //Luodaan kukin raaka-aine erikseen
+            this.yksiRAine = new JPanel();
+            this.yksiRAine.setLayout(new FlowLayout());
+            this.raakaAine = aine;
+            this.rAineMaaraMuokkaus = new JTextField(this.raakaAine.getMaara(), RaakaAine.MAARA_PITUUS);
+        this.rAineMaaraMuokkaus.getDocument().addDocumentListener(new PaivitaRaakaAineMaara(this.rAineMaaraMuokkaus, this.raakaAine));
+            this.rAineMittaMuokkaus = new JTextField(this.raakaAine.getMitta(), RaakaAine.MITTA_PITUUS);
+        this.rAineMittaMuokkaus.getDocument().addDocumentListener(new PaivitaRaakaAineMitta(this.rAineMittaMuokkaus, this.raakaAine));
+            this.rAineNimiMuokkaus = new JTextField(this.raakaAine.getNimi(), RaakaAine.R_AINE_NIMI_PITUUS);
+        this.rAineNimiMuokkaus.getDocument().addDocumentListener(new PaivitaRaakaAineNimi(this.rAineNimiMuokkaus, this.raakaAine));
+            this.rAineNappi = new JButton("Muokkaa raaka-ainetta");            
+            this.yksiRAine.add(this.rAineMaaraMuokkaus);
+            this.yksiRAine.add(this.rAineMittaMuokkaus);
+            this.yksiRAine.add(this.rAineNimiMuokkaus);
+            this.raakaAineetAla.add(this.yksiRAine);
+        }
+        this.raakaAinePaneeli.add(this.raakaAineetAla, BorderLayout.SOUTH);        
+    }
+        
+        public void valmistusvaiheMuokkaus(){
+             //Luodaan valmistusvaiheiden muokkausnäkymä
+            this.valmVaihePaneeli.removeAll();
+        this.valmVaihePaneeli.setLayout(new BorderLayout());
+
+        //Luodaan valmistusvaiheille otsikko
+    this.valmistusvaiheetYla = new JPanel();
+        this.valmistusvaiheetYla.setLayout(new FlowLayout());
+        this.vVaiheet = new JLabel("Valmistusvaiheet:");
+        this.vVaiheet.setFont(this.otsikkoTeksti);
+        this.valmistusvaiheetYla.add(this.vVaiheet);
+        this.lisaaValmistusvaihe = new JButton("Lisää valmistusvaihe");
+        this.valmistusvaiheetYla.add(this.lisaaValmistusvaihe);
+        //this.lisaaValmistusvaihe.addActionListener(e -> this.valmistusvaiheLisays());
+        this.valmVaihePaneeli.add(this.valmistusvaiheetYla, BorderLayout.NORTH);
+
+        //Luodaan lista valmistusvaiheista
+        this.valmistusvaiheetAla = new JPanel();
+        this.valmistusvaiheetAla.setLayout(new GridLayout(this.resepti.getVaiheet().size(), 1));
+
+        for (int i = 0; i < this.resepti.getVaiheet().size(); i++) {
+            //Luodaan kukin valmistusvaihe erikseen ja asetetaan omaan paneeliinsa
+            this.yksivaihe = new JPanel();
+            this.yksivaihe.setLayout(new FlowLayout());
+            this.vaihe = new JTextArea();
+            this.vaihe.setFont(this.leipateksti);
+            this.vaihe.setSize(700, 50);
+            this.vaihe.setLineWrap(true);
+            this.vaihe.setWrapStyleWord(true);
+            this.vaihe.setEditable(true);
+            this.vaihe.setText(this.resepti.getVaihe(i));
+            this.yksivaihe.add(this.vaihe);
+            this.vaihe.getDocument().addDocumentListener(new PaivitaValmistusvaihe(this.vaihe, this.resepti, i));
+            this.valmistusvaiheetAla.add(this.yksivaihe);
+        }
+        this.valmVaihePaneeli.add(this.valmistusvaiheetAla, BorderLayout.SOUTH);
+    }       
+           
+            
+        
+    
 }

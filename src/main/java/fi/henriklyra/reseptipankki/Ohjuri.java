@@ -17,47 +17,11 @@ import javax.swing.*;
  */
 public class Ohjuri extends JFrame {
     
-    
-    private JPanel paneeli;
-    private ArrayList<Resepti> reseptilista;
-    private JButton reseptinappi;
-    
-    Reseptinakyma reseptikatselu;
 
-    public void reseptilistaus(JPanel paneeli, ArrayList<Resepti> reseptilista) {
-        this.paneeli = paneeli;
-        this.paneeli.removeAll();
-        //this.paneeli.setLayout(new BorderLayout());
-        this.reseptilista = reseptilista;
-        this.paneeli.setLayout(new GridLayout(this.reseptilista.size(), 1));
-        for (int i = 0; i < this.reseptilista.size(); i++) {
 
-            this.paneeli.add(this.luoReseptinappi(this.reseptilista.get(i)));
-        }
-        this.paneeli.repaint();
-    }
 
-    public JButton luoReseptinappi(Resepti uusiResepti) {       
-        Resepti resepti;
-        resepti = uusiResepti;
-        this.reseptinappi = new JButton();
-        reseptinappi.setLayout(new GridLayout(2, 1));
-        reseptinappi.setSize(400, 100);
-        JLabel rNimi = new JLabel();
-        rNimi.setFont(new Font("Serif", Font.BOLD, 20));
-        rNimi.setSize(100, 20);
-        rNimi.setText(resepti.getNimi());
-        JTextArea kuvailu = new JTextArea(4, 70);
-        kuvailu.setFont(new Font("Serif", Font.BOLD, 12));
-        kuvailu.setLineWrap(true);
-        kuvailu.setWrapStyleWord(true);
-        kuvailu.setEditable(false);
-        kuvailu.setText(resepti.getKuvailu());
-        reseptinappi.add(rNimi);
-        reseptinappi.add(kuvailu);
-        this.reseptinappi.addActionListener(e -> new Reseptinakyma(resepti));       
-        return this.reseptinappi;       
-    }
+
+
 
     public static void main(String[] args) {
          Reseptikortisto rKortisto = new Reseptikortisto();
