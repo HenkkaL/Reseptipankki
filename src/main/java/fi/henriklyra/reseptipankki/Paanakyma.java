@@ -8,16 +8,21 @@ package fi.henriklyra.reseptipankki;
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.border.Border;
 
 /**
- *
+ * Käyttöliittymäluokka joka toteuttaa reseptien alkulistauksen sekä erilaiset
+ * hakulistaukset. Lisäksi luokka toteuttaa näkymän uuden reseptin lisäämiseksi.
  * @author Henkka
  */
 public class Paanakyma extends JFrame {
-
+    
+    protected static Color taustavari = new Color(242,242,218);
     private Reseptikortisto rKortisto;
+    private Resepti resepti;
     private ArrayList<Resepti> reseptilista;
     private JButton reseptinappi;
+    private Reseptinakyma rNakyma;
    
 
     /**
@@ -41,36 +46,42 @@ public class Paanakyma extends JFrame {
 
         luoResepti = new javax.swing.JDialog();
         otsake1 = new javax.swing.JLabel();
-        nimiKentta1 = new javax.swing.JTextField();
-        rAineKentta1 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        rNimiKentta = new javax.swing.JTextField();
+        rAineita = new javax.swing.JTextField();
+        vVaiheita = new javax.swing.JTextField();
         rNimi1 = new javax.swing.JLabel();
         rRAineet1 = new javax.swing.JLabel();
         rvVaiheet1 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        uusiResepti = new javax.swing.JButton();
         jScrollPane = new javax.swing.JScrollPane();
         taustapaneeli = new javax.swing.JPanel();
         ylapaneeli = new javax.swing.JPanel();
         hakulaatikko = new javax.swing.JTextField();
         nimihakuNappi = new javax.swing.JButton();
         tekstihakuNappi = new javax.swing.JButton();
+        alkulistaus = new javax.swing.JButton();
         lisaaReseptiNappi = new javax.swing.JButton();
         alapaneeli = new javax.swing.JPanel();
 
-        luoResepti.setPreferredSize(new java.awt.Dimension(700, 500));
+        luoResepti.setSize(new java.awt.Dimension(500, 300));
 
         otsake1.setText("Luodaan uusi resepti");
 
-        nimiKentta1.setColumns(Resepti.NIMI_PITUUS);
-        nimiKentta1.addActionListener(new java.awt.event.ActionListener() {
+        rNimiKentta.setColumns(Resepti.NIMI_PITUUS);
+        rNimiKentta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nimiKentta1ActionPerformed(evt);
+                rNimiKenttaActionPerformed(evt);
             }
         });
 
-        rAineKentta1.setColumns(2);
+        rAineita.setColumns(2);
 
-        jTextField4.setColumns(2);
+        vVaiheita.setColumns(2);
+        vVaiheita.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                vVaiheitaActionPerformed(evt);
+            }
+        });
 
         rNimi1.setText("Reseptin nimi:");
 
@@ -78,10 +89,10 @@ public class Paanakyma extends JFrame {
 
         rvVaiheet1.setText("Valmistusvaiheita:");
 
-        jButton2.setText("Luo uusi resepti");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        uusiResepti.setText("Luo uusi resepti");
+        uusiResepti.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                uusiReseptiActionPerformed(evt);
             }
         });
 
@@ -90,7 +101,7 @@ public class Paanakyma extends JFrame {
         luoReseptiLayout.setHorizontalGroup(
             luoReseptiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(luoReseptiLayout.createSequentialGroup()
-                .addGap(0, 29, Short.MAX_VALUE)
+                .addGap(0, 329, Short.MAX_VALUE)
                 .addGroup(luoReseptiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(rNimi1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(rRAineet1, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -98,11 +109,11 @@ public class Paanakyma extends JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(luoReseptiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(otsake1)
-                    .addComponent(rAineKentta1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rAineita, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(vVaiheita, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(luoReseptiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jButton2)
-                        .addComponent(nimiKentta1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(uusiResepti)
+                        .addComponent(rNimiKentta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(82, 82, 82))
         );
         luoReseptiLayout.setVerticalGroup(
@@ -112,26 +123,31 @@ public class Paanakyma extends JFrame {
                 .addComponent(otsake1)
                 .addGap(31, 31, 31)
                 .addGroup(luoReseptiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nimiKentta1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rNimiKentta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(rNimi1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 242, Short.MAX_VALUE)
                 .addGroup(luoReseptiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rAineKentta1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rAineita, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(rRAineet1))
                 .addGap(47, 47, 47)
                 .addGroup(luoReseptiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(vVaiheita, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(rvVaiheet1))
                 .addGap(21, 21, 21)
-                .addComponent(jButton2)
+                .addComponent(uusiResepti)
                 .addContainerGap())
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new java.awt.Dimension(800, 500));
 
+        jScrollPane.setBackground(taustavari);
         jScrollPane.setAlignmentX(0);
         jScrollPane.setAlignmentY(0);
+
+        taustapaneeli.setBackground(taustavari);
+
+        ylapaneeli.setBackground(taustavari);
 
         hakulaatikko.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         hakulaatikko.setPreferredSize(new java.awt.Dimension(200, 30));
@@ -158,6 +174,14 @@ public class Paanakyma extends JFrame {
         });
         ylapaneeli.add(tekstihakuNappi);
 
+        alkulistaus.setText("Alkulistaus");
+        alkulistaus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                alkulistausActionPerformed(evt);
+            }
+        });
+        ylapaneeli.add(alkulistaus);
+
         lisaaReseptiNappi.setBackground(new java.awt.Color(255, 51, 51));
         lisaaReseptiNappi.setText("Lisää resepti");
         lisaaReseptiNappi.addActionListener(new java.awt.event.ActionListener() {
@@ -167,7 +191,7 @@ public class Paanakyma extends JFrame {
         });
         ylapaneeli.add(lisaaReseptiNappi);
 
-        alapaneeli.setBackground(new java.awt.Color(255, 255, 255));
+        alapaneeli.setBackground(taustavari);
         alapaneeli.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         javax.swing.GroupLayout alapaneeliLayout = new javax.swing.GroupLayout(alapaneeli);
@@ -233,13 +257,64 @@ public class Paanakyma extends JFrame {
         this.luoResepti.setVisible(true);
     }//GEN-LAST:event_lisaaReseptiNappiActionPerformed
 
-    private void nimiKentta1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nimiKentta1ActionPerformed
+    private void rNimiKenttaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rNimiKenttaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_nimiKentta1ActionPerformed
+    }//GEN-LAST:event_rNimiKenttaActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void uusiReseptiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uusiReseptiActionPerformed
+        if (this.rNimiKentta.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Reseptillä täytyy olla nimi!");
+        }
+        else {
+            try {
+                int apuri = 0;
+                this.resepti = new Resepti(this.rNimiKentta.getText());
+                if (this.rAineita.getText().isEmpty() == false && Integer.parseInt(this.rAineita.getText()) > 0) {
+                    if (Integer.parseInt(this.rAineita.getText()) > 10) {
+                        apuri = 10;
+                        JOptionPane.showMessageDialog(null, "Kymmenen raaka-ainetta riittänee");
+                    } else {
+                        apuri = Integer.parseInt(this.rAineita.getText());
+                        for (int i = 0; i < apuri; i++) {
+                            this.resepti.lisaaRaakaAine(new RaakaAine());
+                        }
+                    }
+                }
+                if (this.vVaiheita.getText().isEmpty() == false && Integer.parseInt(this.vVaiheita.getText()) > 0) {
+                    if (Integer.parseInt(this.vVaiheita.getText()) > 10) {
+                        apuri = 10;
+                        JOptionPane.showMessageDialog(null, "Kymmenen valmistusvaihetta riittänee");
+                    } else {
+                        apuri = Integer.parseInt(this.vVaiheita.getText());
+                    }
+                    for (int i = 0; i < apuri; i++) {
+                        this.resepti.lisaaVaihe("");
+                    }
+                }
+            this.rKortisto.lisaaResepti(this.resepti);
+            this.rNakyma = new Reseptinakyma(this, this.rKortisto, this.resepti);
+            this.rNakyma.muokkaaReseptia();
+            this.rNimiKentta.setText("");
+            this.rAineita.setText("");
+            this.vVaiheita.setText("");      
+            Reseptikortisto.tallentamatonMuutos();
+            this.luoResepti.setVisible(false);
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Raaka-aineiden ja valmistusvaiheiden määräksi vain kokonaisluvut");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Odottamaton virhe. Reseptiä ei lisätty");
+        }        // TODO add your handling code here:
+        }
+    }//GEN-LAST:event_uusiReseptiActionPerformed
+
+    private void vVaiheitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vVaiheitaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_vVaiheitaActionPerformed
+
+    private void alkulistausActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alkulistausActionPerformed
+        this.alkulistaus();
+    }//GEN-LAST:event_alkulistausActionPerformed
 
     /**
      * @param args the command line arguments
@@ -281,80 +356,92 @@ public class Paanakyma extends JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel alapaneeli;
+    private javax.swing.JButton alkulistaus;
     private javax.swing.JTextField hakulaatikko;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JDialog jDialog1;
     private javax.swing.JScrollPane jScrollPane;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JButton lisaaReseptiNappi;
     private javax.swing.JDialog luoResepti;
-    private javax.swing.JTextField nimiKentta;
-    private javax.swing.JTextField nimiKentta1;
     private javax.swing.JButton nimihakuNappi;
-    private javax.swing.JLabel otsake;
     private javax.swing.JLabel otsake1;
-    private javax.swing.JTextField rAineKentta;
-    private javax.swing.JTextField rAineKentta1;
-    private javax.swing.JLabel rNimi;
+    private javax.swing.JTextField rAineita;
     private javax.swing.JLabel rNimi1;
-    private javax.swing.JLabel rRAineet;
+    private javax.swing.JTextField rNimiKentta;
     private javax.swing.JLabel rRAineet1;
-    private javax.swing.JLabel rvVaiheet;
     private javax.swing.JLabel rvVaiheet1;
     private javax.swing.JPanel taustapaneeli;
     private javax.swing.JButton tekstihakuNappi;
+    private javax.swing.JButton uusiResepti;
+    private javax.swing.JTextField vVaiheita;
     private javax.swing.JPanel ylapaneeli;
     // End of variables declaration//GEN-END:variables
 
     public void alkulistaus() {
+        this.rKortisto.jarjesta();
        this.reseptilistaus(this.rKortisto.tuoKortisto());
         SwingUtilities.updateComponentTreeUI(this);
-        this.jScrollPane.getVerticalScrollBar().setValue(0);
-        
+        this.jScrollPane.getVerticalScrollBar().setValue(0);        
     }
-
+    
     public void hakuNimesta() {
+        this.rKortisto.jarjesta();
         this.reseptilistaus(this.rKortisto.nimiHaku(this.hakulaatikko.getText()));
         SwingUtilities.updateComponentTreeUI(this);
         this.jScrollPane.getVerticalScrollBar().setValue(0);
     }
 
-    public void hakuKaikesta() {
+    public void hakuKaikesta() {  
+        this.rKortisto.jarjesta();
         this.reseptilistaus(this.rKortisto.taysiHaku(this.hakulaatikko.getText()));
         SwingUtilities.updateComponentTreeUI(this);
         this.jScrollPane.getVerticalScrollBar().setValue(0);
     }
-        public void reseptilistaus(ArrayList<Resepti> reseptilista) {
+    
+    public void reseptilistaus(ArrayList<Resepti> reseptilista) {
         this.alapaneeli.removeAll();
         this.reseptilista = reseptilista;
-        this.alapaneeli.setLayout(new GridLayout(this.reseptilista.size(), 1));
-        for (int i = 0; i < this.reseptilista.size(); i++) {
-            this.alapaneeli.add(this.luoReseptinappi(this.reseptilista.get(i)));
+        
+        if (this.reseptilista.size() == 0) {
+            JLabel hakutulos = new JLabel();
+            hakutulos.setFont(new Font("Serif", Font.BOLD, 20));
+            hakutulos.setSize(100, 20);
+            hakutulos.setText("Antamallasi hakusanalla ei löytynyt yhtään reseptiä");
+            this.alapaneeli.add(hakutulos);
+        } else {            
+            this.alapaneeli.setLayout(new GridLayout(this.reseptilista.size(), 1));
+            for (int i = 0; i < this.reseptilista.size(); i++) {
+                this.alapaneeli.add(this.luoReseptinappi(this.reseptilista.get(i)));
+            }
         }
         this.alapaneeli.repaint();
     }
-        
-            public JButton luoReseptinappi(Resepti uusiResepti) {       
+
+    public JButton luoReseptinappi(Resepti uusiResepti) {     
         Resepti resepti;
         resepti = uusiResepti;
         this.reseptinappi = new JButton();
-        reseptinappi.setLayout(new GridLayout(2, 1));
-        reseptinappi.setSize(400, 100);
+        this.reseptinappi.setLayout(new GridLayout(2, 1));
+        this.reseptinappi.setSize(400, 100);
         JLabel rNimi = new JLabel();
         rNimi.setFont(new Font("Serif", Font.BOLD, 20));
         rNimi.setSize(100, 20);
         rNimi.setText(resepti.getNimi());
         JTextArea kuvailu = new JTextArea(4, 70);
         kuvailu.setFont(new Font("Serif", Font.BOLD, 12));
-        kuvailu.setLineWrap(true);
+        kuvailu.setBackground(taustavari);
+        kuvailu.setOpaque(false);
+        kuvailu.setLineWrap(true);       
         kuvailu.setWrapStyleWord(true);
         kuvailu.setEditable(false);
+        
+        
+        
         kuvailu.setText(resepti.getKuvailu());
-        reseptinappi.add(rNimi);
-        reseptinappi.add(kuvailu);
-        this.reseptinappi.addActionListener(e -> new Reseptinakyma(resepti));       
+        this.reseptinappi.add(rNimi);
+        this.reseptinappi.add(kuvailu);
+        this.reseptinappi.addActionListener(e -> new Reseptinakyma(this, rKortisto, resepti)); 
+        this.reseptinappi.setBackground(taustavari);
+        this.reseptinappi.setOpaque(true);
+        this.reseptinappi.setBorderPainted(false);
         return this.reseptinappi;       
     }
 

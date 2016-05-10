@@ -7,21 +7,42 @@ import java.util.ArrayList;
  * Tämä luokka määrittelee Reseptikortiston reseptin.
  *
  * @see Reseptikortisto
+ * @see  Raaka-aine
  * @author Henkka
  */
-public class Resepti implements Serializable, Comparable<Resepti> {
+public class Resepti implements Serializable, Comparable<Resepti>, Cloneable {
+    /**
+     * Reseptin nimi
+     */
+    private String nimi;
+    /**
+     * Reseptin pienimuotoinen kuvailu
+     */
+    private String kuvailu;
+    /**
+     * Reseptin nimen maksimipituus
+     */
+    public static final int NIMI_PITUUS = 30;
+    /**
+     * Kuvailuun käytettävän merkkijonon maksimipituus
+     */
+    public static final int KUVAILU_PITUUS = 300; 
+    /**
+     * Valmistuvaiheen kuvailuun käytettävän merkkijonon maksimipituus
+     */
+    public static final int VAIHE_PITUUS = 300; 
+    /**
+     * Luettelo raaka-aineista
+     */
+    private ArrayList<RaakaAine> rAineet;
+    /**
+     * Luettelo valmistusvaiheista
+     */
+    private ArrayList<String> vaiheet;
 
-    private String nimi; //reseptin nimi
-    private String kuvailu; //reseptin pienimuotoinen kuvailu
-    public static final int NIMI_PITUUS = 30; //reseptin nimen maksimipituus
-    public static final int KUVAILU_PITUUS = 300; //kuvailuun käytettävän merkkijonon maksimipituus
-    public static final int VAIHE_PITUUS = 300; //valmistuvaiheen kuvailuun käytettävän merkkijonon maksimipituus
-    private ArrayList<RaakaAine> rAineet; //luettelo raaka-aineista
-    private ArrayList<String> vaiheet; //luettelo valmistusvaiheista
-    private RaakaAine uusiRaakaAine;
 
     /**
-     * Parametritön konstruktori luo Reseptin, jolla on tyhjät kentät mutta
+     * Parametritön konstruktori luo Reseptin, jolla on tyhjät kentät, mutta
      * valmiit listat raaka-aineita ja valmistusvaiheita varten.
      */
     public Resepti() {
@@ -150,6 +171,7 @@ public class Resepti implements Serializable, Comparable<Resepti> {
         }
         return true;
     }
+    
 
     /**
      * Metodi lisää valmistusvaiheet sisältävään -ArrayListiin uuden
@@ -168,8 +190,8 @@ public class Resepti implements Serializable, Comparable<Resepti> {
     /**
      * Metodi joka palauttaa reseptin raaka-aineet sisältän listan.
      *
-     * @return Arraylist tyyppinen lista, joka pitää sisällään RaakaAine
-     * -olioita.
+     * @return Arraylist tyyppinen lista, joka pitää sisällään 
+     * RaakaAine -olioita.
      */
     public ArrayList<RaakaAine> getRaakaAineet() {
         return rAineet;
@@ -224,6 +246,21 @@ public class Resepti implements Serializable, Comparable<Resepti> {
     public void lisaaRaakaAine(RaakaAine rAine) {
         this.rAineet.add(rAine);
     }
+    
+    /**
+     * Metodi poistaa reseptistä ne raaka-aineet ja valmistusvaiheet, joiden 
+     * merkkijonot (muuttujat) ovat tyhjiä. 
+     */
+    public void puhdistaResepti(){
+        for (int i = this.rAineet.size()-1; i >= 0; i--){
+            if (this.rAineet.get(i).getNimi().trim().isEmpty())
+                this.rAineet.remove(i);
+        }
+        for (int i = this.vaiheet.size()-1; i >= 0; i--){
+            if (this.vaiheet.get(i).trim().isEmpty())
+                this.vaiheet.remove(i);
+        }
+    }
 
     /**
      * Metodilla verrataan reseptien järjestystä näiden nimen perusteella¨.
@@ -232,17 +269,36 @@ public class Resepti implements Serializable, Comparable<Resepti> {
      * @return Int tyyppinen arvo, joka kertoo reseptien järjestyksen.
      */
     public int compareTo(Resepti toinenResepti) {
-        return this.nimi.compareTo(toinenResepti.getNimi());
+        return this.nimi.compareToIgnoreCase(toinenResepti.getNimi());
     }
     
     /**
-     * 
-     * @param toinenResepti
-     * @return 
+     * Metodi tutkii onko resepti identtinen verrattavan reseptin suhteen
+     * @param toinenResepti verratttava Resepti -olio
+     * @return Boolean arvo, joka on tosi, jos reseptit ovat identtisiä
      */
     public boolean equals(Resepti toinenResepti){
         return (this.nimi.equals(toinenResepti.getNimi()) && this.kuvailu.equals(toinenResepti.getKuvailu()) 
                 && this.rAineet.equals(toinenResepti.getRaakaAineet()) && this.vaiheet.equals(toinenResepti.getVaiheet()));
+    }
+    
+    /**
+     * Metodi kopioi reseptin parametriksi annettavan reseptin mukaan
+     * @param kopioitava Resepti -olio, josta tehdään kopio
+     * @return Boolean arvo, joka on tosi, jos reseptin kopioiminen onnistui
+     */
+    public boolean kopioi(Resepti kopioitava){
+        try{
+        this.nimi = kopioitava.getNimi();
+        this.kuvailu = kopioitava.getKuvailu();
+        this.rAineet = kopioitava.getRaakaAineet();
+        this.vaiheet = kopioitava.getVaiheet();
+        
+        return true;        
+        } catch (Exception e) {
+            return false;
+        }
+        
     }
             
 

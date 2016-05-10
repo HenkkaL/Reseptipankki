@@ -8,17 +8,37 @@ import java.io.Serializable;
  * @see Resepti
  * @author Henkka
  */
-public class RaakaAine implements Serializable {
+public class RaakaAine implements Serializable, Cloneable {
 
-    private String nimi; //raaka-aineen nimi
-    private String mitta; //käytettävä mittayksikkö
-    private String maara; //raaka-aineen määrä. Merkkijono mahdollistaa sanalliset kuvailut esim. "hyppysellinen"
+    /**
+     * Raaka-aineen nimi
+     */
+    private String nimi;
+    /**
+     * Raaka-aineen mittayksikkö
+     */
+    private String mitta;
+    /**
+     * Raaka-aineen määrä. Merkkijono mahdollistaa sanalliset kuvailut esim.
+     * "hyppysellinen"
+     */
+    private String maara;
+    /**
+     * Raaka-aineen nimen merkkijonon suurin sallittu pituus
+     */
     public static final int R_AINE_NIMI_PITUUS = 30; //raaka-aineen nimen merkkijonon suurin sallittu pituus
+    /**
+     * Raaka-aineen mittayksikön merkkijonon suurin sallittu pituus
+     */
     public static final int MITTA_PITUUS = 20; // mittayksikön merkkijonon suurin sallittu pituus
+    /**
+     * Raaka-aineen määrän merkkijonon suurin sallittu pituus
+     */
     public static final int MAARA_PITUUS = 20; //määrää kuvaavan merkkijonon suurin sallittu pituus
 
     /**
-     * Parametritön konstruktori luo raaka-aineen, jonka kentät ovat tyhjiä.
+     * Parametritön konstruktori luo raaka-aineen, jonka kentät ovat tyhjiä
+     * merkkijonoja.
      */
     public RaakaAine() {
         this.nimi = "";
@@ -30,17 +50,15 @@ public class RaakaAine implements Serializable {
      * Parametrillinen konstruktori, jolla voi määritellä raaka-aineen kaikki
      * kentät.
      *
-     * @param nimi String muotoinen merkkijono, joka kertoo raaka-aineen nimen.
-     * @param mitta String muotoinen merkkijono, joka kertoo raaka-aineen kanssa
-     * käytetyn mittayksikön.
-     * @param maara String muotoinen merkkijono, joka kertoo käytetyn
-     * raaka-aineen määrän.
+     * @param nimi Raaka-aineen nimi.
+     * @param mitta Raaka-aineen kanssa käytetty mittayksikkö.
+     * @param maara Raaka-aineen määrä.
      */
     public RaakaAine(String nimi, String mitta, String maara) {
         try {
             this.setNimi(nimi);
             this.setMitta(mitta);
-            this.setMaara(maara);            
+            this.setMaara(maara);
         } catch (Exception e) {
             System.out.println("Ongelmia Raaka-aineen luomisessa" + e);
         }
@@ -115,18 +133,20 @@ public class RaakaAine implements Serializable {
         this.maara = maara;
         return true;
     }
+
     /**
-     * 
-     * @param toinenRA
-     * @return 
+     * Metodi tutkii onko raaka-aine identtinen verrattavan raaka-aineen suhteen
+     *
+     * @param toinenRA verrattava raaka-aine (RaakaAine)
+     * @return Boolean arvo, joka on tosi, jos raaka-aineet ovat identtisiä
      */
     public boolean equals(RaakaAine toinenRA) {
-        return (this.nimi.equals(toinenRA.getNimi()) && this.mitta.equals(toinenRA.getMitta()) 
+        return (this.nimi.equals(toinenRA.getNimi()) && this.mitta.equals(toinenRA.getMitta())
                 && this.maara.equals(toinenRA.getMaara()));
     }
 
     /**
-     * Palauttaa raaka-aineen tiedot.
+     * Palauttaa raaka-aineen tiedot yhtenä merkkijonona.
      *
      * @return raaka-aineen tiedot String merkkijonona
      */

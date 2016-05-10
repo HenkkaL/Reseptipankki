@@ -10,8 +10,12 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 /**
- *
+ * Tekninen apuluokka, jonka tehtävänä on tarkkailla ja päivittää reseptinäkymän 
+ * muokkaustilassa tapahtuvia reseptin raaka-aineen nimeen kohdistuvia 
+ * toimenpiteitä
  * @author Henkka
+ * @see Reseptinakyma
+ * @see RaakaAine
  */
 public class PaivitaRaakaAineNimi implements DocumentListener{
           
@@ -19,23 +23,28 @@ public class PaivitaRaakaAineNimi implements DocumentListener{
             RaakaAine rAine;
             
             public PaivitaRaakaAineNimi(JTextField rAineNimi, RaakaAine rAine){
-                this.rAineNimi = rAineNimi;
+                this.rAineNimi = rAineNimi;                
                 this.rAine = rAine;
+                
             }
 
         @Override
-        public void insertUpdate(DocumentEvent de) {
+        public void insertUpdate(DocumentEvent de) {                 
                 this.rAine.setNimi(this.rAineNimi.getText());
+                Reseptikortisto.tallentamatonMuutos();
+                
         }
 
         @Override
         public void removeUpdate(DocumentEvent de) {
                 this.rAine.setNimi(this.rAineNimi.getText());
+                Reseptikortisto.tallentamatonMuutos();
         }
 
         @Override
         public void changedUpdate(DocumentEvent de) {
                 this.rAine.setNimi(this.rAineNimi.getText());
+                Reseptikortisto.tallentamatonMuutos();
         }
     
 }

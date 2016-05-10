@@ -10,8 +10,11 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 /**
- *
+ * Tekninen apuluokka, jonka tehtävänä on tarkkailla ja päivittää reseptinäkymän 
+ * muokkaustilassa tapahtuvia reseptin valmistusvaiheisiin kohdistuvia toimenpiteitä
  * @author Henkka
+ * @see Reseptinakyma
+ * @see Resepti
  */
 public class PaivitaValmistusvaihe implements DocumentListener{
           
@@ -29,16 +32,19 @@ public class PaivitaValmistusvaihe implements DocumentListener{
         @Override
         public void insertUpdate(DocumentEvent de) {
             this.resepti.setVaihe(this.valmistusvaihe, this.valmistusvaiheKentta.getText());
+            Reseptikortisto.tallentamatonMuutos();
         }
 
         @Override
         public void removeUpdate(DocumentEvent de) {
             this.resepti.setVaihe(this.valmistusvaihe, this.valmistusvaiheKentta.getText());
+            Reseptikortisto.tallentamatonMuutos();
         }
 
         @Override
         public void changedUpdate(DocumentEvent de) {
             this.resepti.setVaihe(this.valmistusvaihe, this.valmistusvaiheKentta.getText());
+            Reseptikortisto.tallentamatonMuutos();
         }
 
     

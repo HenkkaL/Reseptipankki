@@ -12,19 +12,28 @@ import java.util.Scanner;
  * @author Henkka
  */
 public class Reseptikortisto {
-
-    private boolean onkoTallennettu;
-
+    
+    /**
+     * Luokkammuuttuja, jota käytetään reseptikortiston tallentamattomien
+     * muutosten seuraamiseen
+     */
+    public static boolean onkoTallennettu;
+    /**
+     * Reseptikortisto on tietorakenne, joka pitää sisällään sovelluksen reseptit
+     */
     private ArrayList<Resepti> reseptikortisto;
     private ArrayList<Resepti> hakutulos;
     private Resepti uusiResepti, resepti;
-
+    
+    /**
+     * Parametritön konstruktori
+     */
     public Reseptikortisto() {
         reseptikortisto = new ArrayList<>();
     }
 
     /**
-     * Metodi tallentaa ja sulkee reseptikortisto -tyyppisen tiedoston.
+     * Metodi tallentaa ja sulkee kortiston säilyttävän tiedoston.
      *
      * @return Palauttaa tiedon operaation onnistumisesta.
      */
@@ -44,7 +53,7 @@ public class Reseptikortisto {
     }
 
     /**
-     * Metodi tallentaa reseptikortisto -tyyppisen tiedoston.
+     * Metodi tallentaa kortiston säilyttävän tiedoston.
      *
      * @return Palauttaa tiedon operaation onnistumisesta.
      */
@@ -63,7 +72,7 @@ public class Reseptikortisto {
     }
 
     /**
-     * Metodi avaa reseptikortisto -tyyppisen tiedoston.
+     * Metodi avaa kortiston säilyttävän tiedoston.
      *
      * @return Palauttaa tiedon operaation onnistumisesta.
      */
@@ -81,9 +90,10 @@ public class Reseptikortisto {
     }
     
     /**
-     * Ei testattu, ei kuvailtu!
-     * @param indeksi
-     * @return 
+     * Metodilla voidaan hakea reseptikortiston tietyssä indeksissä sijaitseva
+     * resepti
+     * @param indeksi indeksi, josta resepti haetaan.
+     * @return Resepti -olio, joka palautetaan.
      */
     public Resepti tuoResepti(int indeksi){        
         try{
@@ -95,8 +105,8 @@ public class Reseptikortisto {
     }
     
     /**
-     * 
-     * @return 
+     * Metodilla palauttaa kutsujalle koko reseptikortiston.
+     * @return reseptikortisto, joka on Resepti -olioista koostuva ArrayList.
      */
     public ArrayList<Resepti> tuoKortisto(){
         return this.reseptikortisto;
@@ -165,11 +175,9 @@ public class Reseptikortisto {
      */
     public boolean lisaaResepti(String reseptinNimi) {
 
-        for (Resepti apuri : this.reseptikortisto) {
-            if (apuri.getNimi().equalsIgnoreCase(reseptinNimi)) {
+        
+            if (reseptinNimi.isEmpty())
                 return false;
-            }
-        }
         this.uusiResepti = new Resepti(reseptinNimi);
         this.reseptikortisto.add(uusiResepti);        
         this.tallentamatonMuutos();
@@ -192,9 +200,8 @@ public class Reseptikortisto {
      * @return Palauttaa tiedon (boolean) operaation onnistumisesta.
      */
     public boolean poistaResepti(Resepti poistettavaResepti) {
-        if (!this.reseptikortisto.contains(poistettavaResepti)) {
-            return false;
-        }
+        if (!this.reseptikortisto.contains(poistettavaResepti)) 
+            return false;        
         this.reseptikortisto.remove(poistettavaResepti);
         onkoTallennettu = false;
         return true;
@@ -206,20 +213,21 @@ public class Reseptikortisto {
      *
      * @return Palauttaa tiedon (boolean) reseptikortiston tallennustilasta.
      */
-    public boolean tallennustila() {
-        return this.onkoTallennettu;
+    public static boolean tallennustila() {
+        return onkoTallennettu;
     }
 
     /**
      * Luokkametodi muuttaa tallennustilan arvoa.
      */
-    public void tallentamatonMuutos() {
-        this.onkoTallennettu = false;
+    public static void tallentamatonMuutos() {
+        onkoTallennettu = false;
     }
     
     /**
-     * EI testattu ei kuvailtu
-     * @return 
+     * Metodi palauttaa tiedon kortiston koosta.
+     * @return kokonaislukuarvo, joka kertoo reseptikortiston sisältämien
+     * reseptien määrän
      */
     public int kortistonKoko(){
         return this.reseptikortisto.size();

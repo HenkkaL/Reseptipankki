@@ -4,8 +4,8 @@
   <NonVisualComponents>
     <Container class="javax.swing.JDialog" name="luoResepti">
       <Properties>
-        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[700, 500]"/>
+        <Property name="size" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[500, 300]"/>
         </Property>
       </Properties>
 
@@ -13,7 +13,7 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="0" pref="29" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="329" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="rNimi1" alignment="1" min="-2" max="-2" attributes="0"/>
                       <Component id="rRAineet1" alignment="1" min="-2" max="-2" attributes="0"/>
@@ -22,11 +22,11 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="otsake1" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="rAineKentta1" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jTextField4" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="rAineita" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="vVaiheita" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                          <Component id="jButton2" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="nimiKentta1" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="uusiResepti" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="rNimiKentta" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace min="-2" pref="82" max="-2" attributes="0"/>
@@ -40,21 +40,21 @@
                   <Component id="otsake1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="nimiKentta1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="rNimiKentta" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="rNimi1" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="42" max="32767" attributes="0"/>
+                  <EmptySpace pref="242" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="rAineKentta1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="rAineita" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="rRAineet1" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jTextField4" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="vVaiheita" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="rvVaiheet1" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
-                  <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                  <Component id="uusiResepti" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -66,29 +66,32 @@
             <Property name="text" type="java.lang.String" value="Luodaan uusi resepti"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="nimiKentta1">
+        <Component class="javax.swing.JTextField" name="rNimiKentta">
           <Properties>
             <Property name="columns" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="Resepti.NIMI_PITUUS" type="code"/>
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nimiKentta1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rNimiKenttaActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JTextField" name="rAineKentta1">
+        <Component class="javax.swing.JTextField" name="rAineita">
           <Properties>
             <Property name="columns" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="2" type="code"/>
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField4">
+        <Component class="javax.swing.JTextField" name="vVaiheita">
           <Properties>
             <Property name="columns" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="2" type="code"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="vVaiheitaActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="rNimi1">
           <Properties>
@@ -105,12 +108,12 @@
             <Property name="text" type="java.lang.String" value="Valmistusvaiheita:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton2">
+        <Component class="javax.swing.JButton" name="uusiResepti">
           <Properties>
             <Property name="text" type="java.lang.String" value="Luo uusi resepti"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="uusiReseptiActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
@@ -153,6 +156,9 @@
   <SubComponents>
     <Container class="javax.swing.JScrollPane" name="jScrollPane">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="taustavari" type="code"/>
+        </Property>
         <Property name="alignmentX" type="float" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="0" type="code"/>
         </Property>
@@ -164,6 +170,11 @@
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
         <Container class="javax.swing.JPanel" name="taustapaneeli">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="taustavari" type="code"/>
+            </Property>
+          </Properties>
 
           <Layout>
             <DimensionLayout dim="0">
@@ -192,6 +203,11 @@
           </Layout>
           <SubComponents>
             <Container class="javax.swing.JPanel" name="ylapaneeli">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="taustavari" type="code"/>
+                </Property>
+              </Properties>
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
               <SubComponents>
@@ -224,6 +240,14 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tekstihakuNappiActionPerformed"/>
                   </Events>
                 </Component>
+                <Component class="javax.swing.JButton" name="alkulistaus">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Alkulistaus"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="alkulistausActionPerformed"/>
+                  </Events>
+                </Component>
                 <Component class="javax.swing.JButton" name="lisaaReseptiNappi">
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -239,8 +263,8 @@
             </Container>
             <Container class="javax.swing.JPanel" name="alapaneeli">
               <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="taustavari" type="code"/>
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">

@@ -10,8 +10,11 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 /**
- *
+ * Tekninen apuluokka, jonka tehtävänä on tarkkailla ja päivittää reseptinäkymän 
+ * muokkaustilassa tapahtuvia reseptin nimeen kohdistuvia toimenpiteitä
  * @author Henkka
+ * @see Reseptinakyma
+ * @see Resepti
  */
 public class PaivitaNimi implements DocumentListener{
           
@@ -24,18 +27,21 @@ public class PaivitaNimi implements DocumentListener{
             }
 
         @Override
-        public void insertUpdate(DocumentEvent de) {
+        public void insertUpdate(DocumentEvent de) {            
             this.resepti.setNimi(this.nimiKentta.getText());
+            Reseptikortisto.tallentamatonMuutos();
         }
 
         @Override
         public void removeUpdate(DocumentEvent de) {
             this.resepti.setNimi(this.nimiKentta.getText());
+            Reseptikortisto.tallentamatonMuutos();
         }
 
         @Override
         public void changedUpdate(DocumentEvent de) {
             this.resepti.setNimi(this.nimiKentta.getText());
+            Reseptikortisto.tallentamatonMuutos();
         }
     
 }
