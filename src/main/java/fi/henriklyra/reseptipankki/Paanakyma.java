@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -47,8 +48,11 @@ public class Paanakyma extends JFrame {
         luoResepti = new javax.swing.JDialog();
         otsake1 = new javax.swing.JLabel();
         rNimiKentta = new javax.swing.JTextField();
+        rNimiKentta.setDocument(new JTextFieldLimit(Resepti.NIMI_PITUUS));
         rAineita = new javax.swing.JTextField();
+        rAineita.setDocument(new JTextFieldLimit(2));
         vVaiheita = new javax.swing.JTextField();
+        vVaiheita.setDocument(new JTextFieldLimit(2));
         rNimi1 = new javax.swing.JLabel();
         rRAineet1 = new javax.swing.JLabel();
         rvVaiheet1 = new javax.swing.JLabel();
@@ -63,7 +67,8 @@ public class Paanakyma extends JFrame {
         lisaaReseptiNappi = new javax.swing.JButton();
         alapaneeli = new javax.swing.JPanel();
 
-        luoResepti.setSize(new java.awt.Dimension(500, 300));
+        luoResepti.setFocusTraversalPolicyProvider(true);
+        luoResepti.setSize(new java.awt.Dimension(800, 300));
 
         otsake1.setText("Luodaan uusi resepti");
 
@@ -75,8 +80,15 @@ public class Paanakyma extends JFrame {
         });
 
         rAineita.setColumns(2);
+        rAineita.setText("0");
+        rAineita.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rAineitaActionPerformed(evt);
+            }
+        });
 
         vVaiheita.setColumns(2);
+        vVaiheita.setText("0");
         vVaiheita.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 vVaiheitaActionPerformed(evt);
@@ -275,9 +287,9 @@ public class Paanakyma extends JFrame {
                         JOptionPane.showMessageDialog(null, "Kymmenen raaka-ainetta riittänee");
                     } else {
                         apuri = Integer.parseInt(this.rAineita.getText());
+                    }
                         for (int i = 0; i < apuri; i++) {
-                            this.resepti.lisaaRaakaAine(new RaakaAine());
-                        }
+                            this.resepti.lisaaRaakaAine(new RaakaAine());                        
                     }
                 }
                 if (this.vVaiheita.getText().isEmpty() == false && Integer.parseInt(this.vVaiheita.getText()) > 0) {
@@ -295,9 +307,9 @@ public class Paanakyma extends JFrame {
             this.rNakyma = new Reseptinakyma(this, this.rKortisto, this.resepti);
             this.rNakyma.muokkaaReseptia();
             this.rNimiKentta.setText("");
-            this.rAineita.setText("");
-            this.vVaiheita.setText("");      
-            Reseptikortisto.tallentamatonMuutos();
+            this.rAineita.setText("0");
+            this.vVaiheita.setText("0");          
+            this.rKortisto.tallenna();
             this.luoResepti.setVisible(false);
 
         } catch (NumberFormatException e) {
@@ -315,6 +327,10 @@ public class Paanakyma extends JFrame {
     private void alkulistausActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alkulistausActionPerformed
         this.alkulistaus();
     }//GEN-LAST:event_alkulistausActionPerformed
+
+    private void rAineitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rAineitaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rAineitaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -403,7 +419,7 @@ public class Paanakyma extends JFrame {
         if (this.reseptilista.size() == 0) {
             JLabel hakutulos = new JLabel();
             hakutulos.setFont(new Font("Serif", Font.BOLD, 20));
-            hakutulos.setSize(100, 20);
+            hakutulos.setSize(500, 50);
             hakutulos.setText("Antamallasi hakusanalla ei löytynyt yhtään reseptiä");
             this.alapaneeli.add(hakutulos);
         } else {            

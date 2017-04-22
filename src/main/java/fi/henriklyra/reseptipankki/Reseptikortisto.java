@@ -173,9 +173,7 @@ public class Reseptikortisto {
      * @param reseptinNimi String -tyyppinn muuttuja.
      * @return Palauttaa tiedon operaation onnistumisesta.
      */
-    public boolean lisaaResepti(String reseptinNimi) {
-
-        
+    public boolean lisaaResepti(String reseptinNimi) {       
             if (reseptinNimi.isEmpty())
                 return false;
         this.uusiResepti = new Resepti(reseptinNimi);

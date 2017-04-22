@@ -44,7 +44,6 @@ public class ReseptiTest {
 
     @Test
     public void konstruktoriVaiheet() {
-
         assertEquals(0, resepti2.getVaiheet().size());
     }
 
@@ -239,6 +238,66 @@ public class ReseptiTest {
         resepti.lisaaRaakaAine(rAine2);
         resepti.lisaaRaakaAine(rAine3);
         assertEquals(false, resepti.setRaakaAine(-1, rAine1));
+    }
+
+    @Test
+    public void kopioidaanResepti() {
+        Resepti r = new Resepti();
+        r.kopioi(resepti);
+        assertEquals(true, resepti.equals(r));
+    }
+
+    @Test
+    public void verrataanSamannimisiaResepteja() {
+        Resepti r1 = new Resepti("Testi");
+        Resepti r2 = new Resepti("Testi");
+        assertEquals(true, r1.equals(r2));
+    }
+
+    @Test
+    public void verrataanErinimisiaResepteja() {
+        Resepti r1 = new Resepti("Testi");
+        Resepti r2 = new Resepti("Tesi");
+        assertEquals(false, r1.equals(r2));
+    }
+
+    @Test
+    public void verrataanKuvailuja() {
+        resepti.kopioi(resepti2);
+        resepti.setKuvailu("testi");
+        assertEquals(false, resepti.equals(resepti2));
+    }
+
+    @Test
+    public void verrataanEriraakaAineita() {
+        resepti.kopioi(resepti2);
+        resepti.lisaaRaakaAine(new RaakaAine("testi", "testi", "testi"));
+        assertEquals(false, resepti.equals(resepti2));
+    }
+
+    @Test
+    public void kopioidaanRaakaAineet() {
+        resepti.kopioi(resepti2);
+        resepti.lisaaRaakaAine(new RaakaAine("testi", "testi", "testi"));
+        resepti.lisaaRaakaAine(new RaakaAine("testi1", "testi1", "testi1"));
+        resepti2.kopioi(resepti);
+        assertEquals(2, resepti2.getRaakaAineet().size());
+    }
+
+    @Test
+    public void kopioidaanvalmistusvaiheet() {
+        resepti.kopioi(resepti2);
+        resepti.lisaaVaihe("testi");
+        resepti.lisaaVaihe("testi1");
+        resepti2.kopioi(resepti);
+        assertEquals(2, resepti2.getVaiheet().size());
+    }
+
+    @Test
+    public void verrataanValmistusvaiheita() {
+        resepti.kopioi(resepti2);
+        resepti.lisaaVaihe("testi");
+        assertEquals(false, resepti.equals(resepti2));
     }
 
     @Test

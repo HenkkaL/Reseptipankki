@@ -24,7 +24,6 @@ public class Reseptinakyma extends javax.swing.JFrame {
     private JPanel otsikkoYla, otsikkoAla, raakaAineetYla, raakaAineetAla, yksiRAine, valmistusvaiheetYla, valmistusvaiheetAla, yksivaihe;
     private JLabel nimi, rAineet, vVaiheet, rAine, mitta, maara;
     private JTextArea kuvailu, vaihe;
-    private JTextPane kuvailuSelailu, vaiheSelailu;
     private JTextField nimiMuokkaus, rAineNimiMuokkaus, rAineMittaMuokkaus, rAineMaaraMuokkaus;
     private JButton muokkaaNappi, lisaaRaakaAine, lisaaValmistusvaihe, tallenna, poista;
     private Font leipateksti, otsikkoTeksti;
@@ -288,7 +287,6 @@ public class Reseptinakyma extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                //new Reseptinakyma().setVisible(true);
             }
         });
     }
@@ -321,6 +319,10 @@ public class Reseptinakyma extends javax.swing.JFrame {
     public void muokkaaReseptia() {
         this.muokattavaResepti = new Resepti();
         this.muokattavaResepti.kopioi(this.resepti);
+        this.reseptinmuokkausnakyma();
+    }
+    
+    public void reseptinmuokkausnakyma(){
         this.otsikkoMuokkaus();
         this.raakaAineMuokkaus();
         this.valmistusvaiheMuokkaus();
@@ -514,7 +516,7 @@ public class Reseptinakyma extends javax.swing.JFrame {
             public void actionPerformed(ActionEvent e) {
                 muokattavaResepti.lisaaRaakaAine(new RaakaAine());
                 Reseptikortisto.tallentamatonMuutos();
-                muokkaaReseptia();
+                reseptinmuokkausnakyma();
                 }
             });
         this.raakaAinePaneeli.add(this.raakaAineetYla, BorderLayout.NORTH);
@@ -581,7 +583,7 @@ public class Reseptinakyma extends javax.swing.JFrame {
             public void actionPerformed(ActionEvent e) {
                 muokattavaResepti.lisaaVaihe("");
                 Reseptikortisto.tallentamatonMuutos();
-                muokkaaReseptia();
+                reseptinmuokkausnakyma();
                 }
             });
         this.valmVaihePaneeli.add(this.valmistusvaiheetYla, BorderLayout.NORTH);

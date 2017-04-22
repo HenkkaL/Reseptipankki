@@ -22,7 +22,7 @@ public class Resepti implements Serializable, Comparable<Resepti>, Cloneable {
     /**
      * Reseptin nimen maksimipituus
      */
-    public static final int NIMI_PITUUS = 30;
+    public static final int NIMI_PITUUS = 50;
     /**
      * Kuvailuun käytettävän merkkijonon maksimipituus
      */
@@ -291,9 +291,15 @@ public class Resepti implements Serializable, Comparable<Resepti>, Cloneable {
         try{
         this.nimi = kopioitava.getNimi();
         this.kuvailu = kopioitava.getKuvailu();
-        this.rAineet = kopioitava.getRaakaAineet();
-        this.vaiheet = kopioitava.getVaiheet();
-        
+        this.rAineet.clear();
+        for (int i = 0; i < kopioitava.getRaakaAineet().size(); i++){
+            this.lisaaRaakaAine(new RaakaAine(kopioitava.getRaakaAine(i).getNimi(), 
+            kopioitava.getRaakaAine(i).getMitta(), kopioitava.getRaakaAine(i).getMaara()));            
+        }
+        this.vaiheet.clear();
+        for (int i = 0; i < kopioitava.getVaiheet().size(); i++){
+            this.lisaaVaihe(kopioitava.getVaihe(i));
+        }        
         return true;        
         } catch (Exception e) {
             return false;

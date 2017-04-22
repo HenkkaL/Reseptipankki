@@ -4,8 +4,9 @@
   <NonVisualComponents>
     <Container class="javax.swing.JDialog" name="luoResepti">
       <Properties>
+        <Property name="focusTraversalPolicyProvider" type="boolean" value="true"/>
         <Property name="size" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[500, 300]"/>
+          <Dimension value="[800, 300]"/>
         </Property>
       </Properties>
 
@@ -75,23 +76,37 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rNimiKenttaActionPerformed"/>
           </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="rNimiKentta.setDocument(new JTextFieldLimit(Resepti.NIMI_PITUUS));"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JTextField" name="rAineita">
           <Properties>
             <Property name="columns" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="2" type="code"/>
             </Property>
+            <Property name="text" type="java.lang.String" value="0"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rAineitaActionPerformed"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="rAineita.setDocument(new JTextFieldLimit(2));&#xa;"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JTextField" name="vVaiheita">
           <Properties>
             <Property name="columns" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="2" type="code"/>
             </Property>
+            <Property name="text" type="java.lang.String" value="0"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="vVaiheitaActionPerformed"/>
           </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="vVaiheita.setDocument(new JTextFieldLimit(2));&#xa;"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="rNimi1">
           <Properties>

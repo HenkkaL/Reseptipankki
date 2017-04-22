@@ -62,7 +62,7 @@ public class RaakaAineTest {
 
     @Test
     public void getteriNimi() {
-        assertEquals(rAine.getNimi(), "makaroni");
+        assertEquals("makaroni", rAine.getNimi());
     }
 
     @Test
@@ -73,12 +73,12 @@ public class RaakaAineTest {
             apuri = apuri + "a";
         }
         rAine.setNimi(apuri);
-        assertEquals(rAine.getNimi(), "tomaatti");
+        assertEquals("tomaatti", rAine.getNimi());
     }
 
     @Test
     public void setteriSopivaMitta() {
-        assertEquals(rAine.setMitta("sopiva mitta"), true);
+        assertEquals(true, rAine.setMitta("sopiva mitta"));
     }
 
     @Test
@@ -106,12 +106,12 @@ public class RaakaAineTest {
         for (int i = 0; i <= RaakaAine.MITTA_PITUUS; i++) {
             apuri = apuri + "a";
         }
-        assertEquals(rAine.getMitta(), "teelusikka");
+        assertEquals("teelusikka", rAine.getMitta());
     }
 
     @Test
     public void setteriSopivaMaara() {
-        assertEquals(rAine.setMaara("sopiva maara"), true);
+        assertEquals(true, rAine.setMaara("sopiva maara"));
     }
 
     @Test
@@ -139,7 +139,7 @@ public class RaakaAineTest {
         for (int i = 0; i <= RaakaAine.MAARA_PITUUS; i++) {
             apuri = apuri + "a";
         }
-        assertEquals(rAine.getMaara(), "9");
+        assertEquals("9", rAine.getMaara());
     }
 
     @Test

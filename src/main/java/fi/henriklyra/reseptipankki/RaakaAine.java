@@ -1,3 +1,4 @@
+
 package fi.henriklyra.reseptipankki;
 
 import java.io.Serializable;
@@ -54,14 +55,10 @@ public class RaakaAine implements Serializable, Cloneable {
      * @param mitta Raaka-aineen kanssa käytetty mittayksikkö.
      * @param maara Raaka-aineen määrä.
      */
-    public RaakaAine(String nimi, String mitta, String maara) {
-        try {
+    public RaakaAine(String nimi, String mitta, String maara) {        
             this.setNimi(nimi);
             this.setMitta(mitta);
-            this.setMaara(maara);
-        } catch (Exception e) {
-            System.out.println("Ongelmia Raaka-aineen luomisessa" + e);
-        }
+            this.setMaara(maara);        
     }
 
     /**
